@@ -1,0 +1,208 @@
+image: atlassian/default-image:2
+
+pipelines:
+  branches:
+    # master is the production branch.
+    feature-*:
+    - step:
+        name: Feature - React Build
+        caches:
+          - node
+        script:
+          - export CI=true
+          - npm install
+          - npm test -- --coverage
+          - npm run-script build
+        artifacts:
+          - build/**
+    - step:
+        name: Feature - Docker Build
+        caches:
+          - docker
+        services:
+          - docker
+        script:
+          - pwd
+          - ls -la
+          - ls -la ./build/          
+          # Modify the commands below to build your repository.
+          # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
+          # - export IMAGE_NAME=your-Dockerhub-account/your-docker-image-name:$BITBUCKET_COMMIT
+          - export IMAGE_NAME=jeremycookdev/deepcube360:$BITBUCKET_BRANCH
+          
+          # build the Docker image (this will use the Dockerfile in the root of the repo)
+          - docker build -t $IMAGE_NAME .
+          # authenticate with the Docker Hub registry
+          - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+          # push the new Docker image to the Docker registry
+          - docker push $IMAGE_NAME
+
+          - echo "finished building!"
+        artifacts:
+          - build/**
+    - step:
+        image: golang:1.9-alpine
+        name: Feature Terraform
+        #Valid values are: test, staging, or production
+        deployment: test
+        trigger: automatic
+        script:
+          #
+          # Install Terraform 
+          #
+          - BUILD_DIR=$(pwd)
+          - echo $BUILD_DIR
+          - ls -la
+          - ls -la $BUILD_DIR/build/
+          - mkdir -p ~/bin
+          - cd ~/bin
+          - export PATH="$PATH:/root/bin"
+          - wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
+          - unzip terraform_0.11.7_linux_amd64.zip
+
+          #
+          # Provision Terraform resources
+          #
+          - cd ${BITBUCKET_CLONE_DIR}/terraform
+          # TERRAFORM -> FEATURE-*
+          - terraform workspace new $BITBUCKET_BRANCH
+          # Ensure Terraform syntax is valid before proceeding.          
+          - terraform init
+          - terraform validate -var app_image=jeremycookdev/deepcube360:$branch
+          # Ensure this step passes so that the state is always pushed.
+          - terraform apply -var dns_subdomain=$BITBUCKET_BRANCH -var app_image=jeremycookdev/deepcube360:$BITBUCKET_COMMIT -auto-approve || true
+          - terraform output alb_hostname > $BUILD_DIR/build/outputs
+          - cat $BUILD_DIR/build/outputs
+        artifacts:
+          - build/**
+    master:
+    - step:
+        name: React Build
+        caches:
+          - node
+        script:
+          - export CI=true
+          - npm install
+          - npm test -- --coverage
+          - npm run-script build
+        artifacts:
+          - build/**
+    - step:
+        name: Docker Build
+        caches:
+          - docker
+        services:
+          - docker
+        script:
+          - pwd
+          - ls -la
+          - ls -la ./build/          
+          # Modify the commands below to build your repository.
+          # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
+          # - export IMAGE_NAME=your-Dockerhub-account/your-docker-image-name:$BITBUCKET_COMMIT
+          - export IMAGE_NAME=jeremycookdev/deepcube360:$BITBUCKET_COMMIT
+          
+          # build the Docker image (this will use the Dockerfile in the root of the repo)
+          - docker build -t $IMAGE_NAME .
+          # authenticate with the Docker Hub registry
+          - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+          # push the new Docker image to the Docker registry
+          - docker push $IMAGE_NAME
+
+          - echo "finished building!"
+        artifacts:
+          - build/**
+    - step:
+        image: golang:1.9-alpine
+        name: Staging Terraform
+        #Valid values are: test, staging, or production
+        deployment: staging
+        trigger: automatic
+        script:
+          #
+          # Install Terraform 
+          #
+          - BUILD_DIR=$(pwd)
+          - echo $BUILD_DIR
+          - ls -la
+          - ls -la $BUILD_DIR/build/
+          - mkdir -p ~/bin
+          - cd ~/bin
+          - export PATH="$PATH:/root/bin"
+          - wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
+          - unzip terraform_0.11.7_linux_amd64.zip
+
+          #
+          # Provision Terraform resources
+          #
+          - cd ${BITBUCKET_CLONE_DIR}/terraform
+          # TERRAFORM -> STAGING
+          - terraform init          
+          - terraform workspace select staging
+          # Ensure Terraform syntax is valid before proceeding.          
+          - terraform validate -var dns_subdomain=staging -var app_image=jeremycookdev/deepcube360:$BITBUCKET_COMMIT
+          # Ensure this step passes so that the state is always pushed.
+          - terraform apply -var dns_subdomain=staging -var app_image=jeremycookdev/deepcube360:$BITBUCKET_COMMIT -auto-approve || true
+          - terraform output alb_hostname > $BUILD_DIR/build/outputs
+          - cat $BUILD_DIR/build/outputs
+        artifacts:
+          - build/**
+    - step:
+        image: golang:1.9-alpine
+        name: Production Terraform
+        #Valid values are: test, staging, or production
+        deployment: production
+        trigger: manual
+        script:
+          #
+          # Install Terraform 
+          #
+          - BUILD_DIR=$(pwd)
+          - echo $BUILD_DIR
+          - ls -la
+          - ls -la $BUILD_DIR/build/
+          - mkdir -p ~/bin
+          - cd ~/bin
+          - export PATH="$PATH:/root/bin"
+          - wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
+          - unzip terraform_0.11.7_linux_amd64.zip
+
+          #
+          # Provision Terraform resources
+          #
+          - cd ${BITBUCKET_CLONE_DIR}/terraform
+          # TERRAFORM -> PROD
+          - terraform init          
+          - terraform workspace select prod         
+          # Ensure Terraform syntax is valid before proceeding.
+          - terraform validate -var dns_subdomain=prod -var app_image=jeremycookdev/deepcube360:$BITBUCKET_COMMIT
+          # Ensure this step passes so that the state is always pushed.
+          - terraform apply -var dns_subdomain=prod -var app_image=jeremycookdev/deepcube360:$BITBUCKET_COMMIT -auto-approve || true
+          - terraform output alb_hostname > $BUILD_DIR/build/outputs
+          - cat $BUILD_DIR/build/outputs
+        artifacts:
+          - build/**
+    - step:
+        image: jeremycookdev/gauntlt2:0b22e799a4386355f73791eff91f6c6d9b29e62e
+        name: Gauntlt Test Prod
+        script:
+          - whoami
+          - BUILD_DIR=$(pwd)
+          - echo $BUILD_DIR
+          - ls -la
+          - ls -la $BUILD_DIR/build/
+          - gauntlt --version
+          - cat $BUILD_DIR/build/outputs
+          - export ALB_HOSTNAME=`cat $BUILD_DIR/build/outputs`
+          - echo x"$ALB_HOSTNAME"x
+          - sed -i "s/TOKEN_ALB_HOSTNAME/$ALB_HOSTNAME/g" ./gauntlt/*.attack
+          - cat ./gauntlt/open.ports.attack
+          - cat ./gauntlt/curl.200.attack
+          - echo ============================
+          - curl -I $ALB_HOSTNAME
+          # - nmap -F -vv tf-ecs-chat-1111111111.us-east-1.elb.amazonaws.com
+          # - nmap -F -vv $ALB_HOSTNAME          
+          - echo ============================
+          # - gauntlt ./gauntlt/open.ports.attack
+          - gauntlt ./gauntlt/curl.200.attack
+          - gauntlt ./gauntlt/ssl.protocol.attack

@@ -1,0 +1,20 @@
+@slow
+
+Feature: Run sslyze against a target
+
+Background:
+  Given "sslyze" is installed
+  And the following profile:
+    | name     | value      |
+    | hostname | prod.demoinccloud.com |
+    | port     | 443        |
+
+Scenario: Ensure no SSLv2 and SSLv3 are disabled
+  When I launch an "sslyze" attack with:
+    """
+    sslyze --sslv2 --sslv3 <hostname>:<port>
+    """
+  Then the output should not contain:
+    """
+    Accepted
+    """
