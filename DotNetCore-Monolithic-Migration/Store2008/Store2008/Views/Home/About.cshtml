@@ -1,0 +1,17 @@
+﻿@model Store2008.Models.CommerceModel
+
+<h2>About</h2>
+
+<p>@Model.User.Firstname @Model.User.Surname</p>
+
+@foreach (var item in Model.Products)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)<br />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sku)<br />
+        </td>
+    </tr>
+}

@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  accountservice:
+    image: accountservice
+    build:
+      context: .
+      dockerfile: AccountService/Dockerfile
+
+  inventoryservice:
+    image: inventoryservice
+    build:
+      context: .
+      dockerfile: InventoryService/Dockerfile
+
+  shoppingservice:
+    image: shoppingservice
+    build:
+      context: .
+      dockerfile: ShoppingService/Dockerfile
+
+  store2018:
+    image: store2018
+    build:
+      context: .
+      dockerfile: Store2018/Dockerfile
+
