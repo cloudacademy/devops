@@ -17,7 +17,7 @@ namespace Store2018.Controllers
             var client = new HttpClient();
 
             var user = new Consumer();
-            HttpResponseMessage res1 = await client.GetAsync("https://localhost:5002/api/consumers/5");
+            HttpResponseMessage res1 = await client.GetAsync("http://localhost:5001/api/consumers/5");
             if (res1.IsSuccessStatusCode)
             {
                 var result = res1.Content.ReadAsStringAsync().Result;
@@ -25,7 +25,7 @@ namespace Store2018.Controllers
             }
                 
             var products = new List<Product>();
-            HttpResponseMessage res2 = await client.GetAsync("https://localhost:5003/api/products");
+            HttpResponseMessage res2 = await client.GetAsync("http://localhost:5002/api/products");
             if(res2.IsSuccessStatusCode){
                 var result = res2.Content.ReadAsStringAsync().Result;
                 products = JsonConvert.DeserializeObject<List<Product>>(result);

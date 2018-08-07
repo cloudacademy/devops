@@ -7,8 +7,8 @@ WORKDIR /app
 EXPOSE 80
 
 FROM microsoft/dotnet:2.1-sdk AS build
-WORKDIR /src/AccountService
-COPY ./AccountService.csproj .
+WORKDIR /src/InventoryService
+COPY ./InventoryService.csproj .
 
 RUN dotnet restore -nowarn:msb3202,nu1503
 COPY . .
@@ -22,4 +22,4 @@ RUN dotnet publish -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "AccountService.dll"]
+ENTRYPOINT ["dotnet", "InventoryService.dll"]

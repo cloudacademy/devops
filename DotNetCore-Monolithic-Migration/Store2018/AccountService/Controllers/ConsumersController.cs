@@ -12,15 +12,14 @@ namespace AccountService.Controllers
     [Route("api/[controller]")]
     public class ConsumersController : Controller
     {
-        // GET: api/values
+        // GET: api/consumers
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value100", "value200" };
         }
 
-        // GET api/values/5
-        // GET api/values/5
+        // GET: api/consumers/5
         [HttpGet("{id}")]
         public ActionResult<Consumer> Get(int id)
         {

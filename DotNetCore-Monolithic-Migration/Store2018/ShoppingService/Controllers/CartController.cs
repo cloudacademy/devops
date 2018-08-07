@@ -12,14 +12,14 @@ namespace ShoppingService.Controllers
     [Route("api/[controller]")]
     public class CartController : Controller
     {
-        // GET: api/values
+        // GET: api/cart
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET cart/values/5
+        // GET api/cart/5
         [HttpGet("{id}")]
         public ActionResult<Cart> Get(int id)
         {
