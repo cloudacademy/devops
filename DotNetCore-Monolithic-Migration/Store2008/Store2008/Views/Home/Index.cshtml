@@ -1,17 +1,42 @@
 ﻿@model Store2008.Models.CommerceModel
 
-<h2>Index</h2>
+<h2>Razor with Microservices:</h2>
 
+<h3>Consumer:</h3>
 <p>@Model.User.Firstname @Model.User.Surname</p>
 
-@foreach (var item in Model.Products)
+<hr />
+
+<h3>Products:</h3>
+@foreach (var product in Model.Products)
 {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)<br />
+            @Html.DisplayFor(modelItem => product.Name)<br />
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Sku)<br />
+            @Html.DisplayFor(modelItem => product.Sku)<br />
         </td>
     </tr>
+}
+
+<hr/>
+
+<h3>Cart:</h3>
+@foreach (var cartItem in Model.Cart.Items)
+{
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => cartItem.Name)<br />
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => cartItem.Sku)<br />
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => cartItem.DiscountPrice)<br />
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => cartItem.RegularPrice)<br />
+    </td>
+</tr>
 }

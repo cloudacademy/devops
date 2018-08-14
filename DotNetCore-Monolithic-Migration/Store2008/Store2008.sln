@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store2008", "Store2008\Store2008.csproj", "{D68CB2BC-7C2B-41B2-9322-E439D89964AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store2008.Tests", "Store2008.Tests\Store2008.Tests.csproj", "{DE427172-0ED7-4E17-A502-DE1BFD070FD7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingService", "ShoppingService\ShoppingService.csproj", "{875E16E4-B3DF-45B3-A045-506ADD3E3D52}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountService", "AccountService\AccountService.csproj", "{0DD10E6E-3E1E-4B17-991E-D0A9B8D5AA5F}"
@@ -23,10 +21,6 @@ Global
 		{D68CB2BC-7C2B-41B2-9322-E439D89964AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D68CB2BC-7C2B-41B2-9322-E439D89964AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D68CB2BC-7C2B-41B2-9322-E439D89964AB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE427172-0ED7-4E17-A502-DE1BFD070FD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE427172-0ED7-4E17-A502-DE1BFD070FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE427172-0ED7-4E17-A502-DE1BFD070FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE427172-0ED7-4E17-A502-DE1BFD070FD7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{875E16E4-B3DF-45B3-A045-506ADD3E3D52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{875E16E4-B3DF-45B3-A045-506ADD3E3D52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{875E16E4-B3DF-45B3-A045-506ADD3E3D52}.Release|Any CPU.ActiveCfg = Release|Any CPU

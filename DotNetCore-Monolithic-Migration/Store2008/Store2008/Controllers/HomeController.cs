@@ -16,13 +16,15 @@ namespace Store2008.Controllers
     {
         private static AccountSvc AccountServices = new AccountSvc();
         private static InventorySvc InventoryServices = new InventorySvc();
+        private static ShoppingSvc ShoppingServices = new ShoppingSvc();
 
         public ActionResult Index()
         {
             var commercemodel = new CommerceModel()
             {
                 User = AccountServices.GetConsumerById(1),
-                Products = InventoryServices.GetProducts()
+                Products = InventoryServices.GetProducts(),
+                Cart = ShoppingServices.GetCart(30)
             };
 
             return View(commercemodel);
