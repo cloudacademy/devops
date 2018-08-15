@@ -15,25 +15,85 @@ namespace InventoryService
 
             var products = new List<Product>(){
                 new Product()
-                    {
-                        Id = 1,
-                        Description = "",
-                        Sku = "abc12300",
-                        Name = "Toy1",
-                        DiscountPrice = 20.99m,
-                        RegularPrice = 29.99m,
-                        Quantity = 100
-                    },
-                    new Product()
-                    {
-                        Id = 2,
-                        Description = "",
-                        Sku = "xyz123",
-                        Name = "Toy2",
-                        DiscountPrice = 20.99m,
-                        RegularPrice = 29.99m,
-                        Quantity = 100
-                    }
+                {
+                    Id = 1,
+                    Description = "",
+                    Sku = "abc12300",
+                    Name = "Toy1",
+                    DiscountPrice = 20.99m,
+                    RegularPrice = 29.99m,
+                    Quantity = 100
+                },
+                new Product()
+                {
+                    Id = 2,
+                    Description = "",
+                    Sku = "xyz123",
+                    Name = "Toy2",
+                    DiscountPrice = 20.99m,
+                    RegularPrice = 29.99m,
+                    Quantity = 100
+                },
+                new Product()
+                {
+                    Id = 3,
+                    Description = "",
+                    Sku = "abc12300",
+                    Name = "Toy3",
+                    DiscountPrice = 20.99m,
+                    RegularPrice = 29.99m,
+                    Quantity = 100
+                },
+                new Product()
+                {
+                    Id = 4,
+                    Description = "",
+                    Sku = "xyz123",
+                    Name = "Toy4",
+                    DiscountPrice = 20.99m,
+                    RegularPrice = 29.99m,
+                    Quantity = 100
+                },
+                new Product()
+                {
+                    Id = 5,
+                    Description = "",
+                    Sku = "abc12300",
+                    Name = "Toy5",
+                    DiscountPrice = 20.99m,
+                    RegularPrice = 29.99m,
+                    Quantity = 100
+                },
+                new Product()
+                {
+                    Id = 6,
+                    Description = "",
+                    Sku = "xyz123",
+                    Name = "Toy6",
+                    DiscountPrice = 20.99m,
+                    RegularPrice = 29.99m,
+                    Quantity = 100
+                },
+                new Product()
+                {
+                    Id = 7,
+                    Description = "",
+                    Sku = "abc12300",
+                    Name = "Toy7",
+                    DiscountPrice = 20.99m,
+                    RegularPrice = 29.99m,
+                    Quantity = 100
+                },
+                new Product()
+                {
+                    Id = 8,
+                    Description = "",
+                    Sku = "xyz123",
+                    Name = "Toy8",
+                    DiscountPrice = 20.99m,
+                    RegularPrice = 29.99m,
+                    Quantity = 100
+                }
             };
 
             return products;
